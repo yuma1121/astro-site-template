@@ -195,12 +195,27 @@ MDX形式で記事を作成します。通常のMarkdownに加えて、Astroコ�
 
 ## ブログカード（リンクカード）
 
+サムネイル画像付き:
+
 <a href="/" class="blog-card">
   <div class="blog-card-inner">
-    <div>
+    <img src="/images/common/og-default.svg" alt="" class="blog-card-thumb" />
+    <div class="blog-card-body">
       <span class="blog-card-label">関連記事</span>
       <div class="blog-card-title">トップページへのリンクカード例</div>
       <div class="blog-card-desc">内部リンクをカード形式で表示できます。</div>
+    </div>
+    <span class="blog-card-arrow">&rarr;</span>
+  </div>
+</a>
+
+テキストのみ（画像なし）:
+
+<a href="/" class="blog-card">
+  <div class="blog-card-inner">
+    <div class="blog-card-body">
+      <span class="blog-card-label">あわせて読みたい</span>
+      <div class="blog-card-title">画像なしのシンプルなブログカードも使えます</div>
     </div>
     <span class="blog-card-arrow">&rarr;</span>
   </div>
@@ -243,6 +258,71 @@ MDX形式で記事を作成します。通常のMarkdownに加えて、Astroコ�
     <div class="faq-q">商用利用はできますか？</div>
     <div class="faq-a">はい、アフィリエイトサイト等の商用利用も可能です。</div>
   </div>
+</div>
+
+## レビューボックス
+
+<div class="review-box">
+  <div class="review-box-header">
+    <img src="/images/common/favicon.svg" alt="サービスロゴ" class="review-box-logo" />
+    <div>
+      <div class="review-box-name">サンプルサービス</div>
+      <div class="review-box-tagline">コスパ最強のサービス</div>
+    </div>
+  </div>
+  <div class="review-box-overall">
+    <span class="review-box-overall-label">総合評価</span>
+    <span class="review-box-overall-stars">★★★★☆</span>
+    <span class="review-box-overall-num">4.2</span>
+  </div>
+  <div class="review-box-scores">
+    <div class="review-box-score">
+      <span class="review-box-score-label">料金</span>
+      <span class="review-box-score-value">★★★★★</span>
+    </div>
+    <div class="review-box-score">
+      <span class="review-box-score-label">サポート</span>
+      <span class="review-box-score-value">★★★★☆</span>
+    </div>
+    <div class="review-box-score">
+      <span class="review-box-score-label">使いやすさ</span>
+      <span class="review-box-score-value">★★★☆☆</span>
+    </div>
+  </div>
+  <div class="review-box-body">
+    <p>ここにレビューの概要を記載します。料金の安さが魅力で、初心者にもおすすめです。</p>
+  </div>
+  <a href="https://example.com" class="review-box-cta" target="_blank" rel="nofollow sponsored noopener noreferrer">
+    公式サイトを見る &#8599;
+  </a>
+</div>
+
+## 価格表示
+
+通常の価格表示:
+
+<p>月額 <span class="price-old">5,000円</span><span class="price-new">2,980</span><span class="price-unit">円/月</span></p>
+
+価格タグスタイル:
+
+<div class="price-tag">
+  <span class="price-old">5,000円</span>
+  <span class="price-new">2,980</span><span class="price-unit">円/月</span>
+</div>
+<span class="price-note">※ 税込み・初年度限定価格</span>
+
+## キャプション付き画像
+
+<div class="fig">
+  <img src="/images/common/og-default.svg" alt="サンプル画像" width="600" height="315" />
+  <span class="fig-caption">画像の説明文をここに記載します（出典: サンプル）</span>
+</div>
+
+影付きバリアント:
+
+<div class="fig fig-shadow fig-small">
+  <img src="/images/common/favicon.svg" alt="小さい画像" width="180" height="180" />
+  <span class="fig-caption">小さい画像 + 影付き</span>
 </div>
 
 ## まとめ
