@@ -17,6 +17,10 @@
   </button>
   <div class="toc-body" id="toc-body">
     <ol class="toc-list" id="toc-list"></ol>
+    <button class="toc-more" id="toc-more-btn" type="button" style="display:none;">
+      すべて表示
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
   </div>
 </nav>
 
@@ -143,6 +147,28 @@
     color: #6b7280;
   }
 
+  .toc-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-top: 1px solid #f3f4f6;
+    background: none;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+
+  .toc-more:hover {
+    color: #2563eb;
+    background: #f9fafb;
+  }
+
   @media (max-width: 1023px) {
     .toc-list :global(.toc-h2 a::before) {
       display: none;
@@ -190,6 +216,31 @@
       li.appendChild(a);
       tocList.appendChild(li);
     });
+
+    // 5件以上あれば折りたたみ
+    const MAX_VISIBLE = 5;
+    const allItems = tocList.querySelectorAll('li');
+    const moreBtn = document.getElementById('toc-more-btn');
+
+    if (allItems.length > MAX_VISIBLE && moreBtn) {
+      let h2Count = 0;
+      allItems.forEach((item) => {
+        if (item.classList.contains('toc-h2')) h2Count++;
+        if (h2Count > MAX_VISIBLE) {
+          item.style.display = 'none';
+          item.setAttribute('data-toc-hidden', 'true');
+        }
+      });
+      moreBtn.style.display = '';
+
+      moreBtn.addEventListener('click', () => {
+        tocList.querySelectorAll('[data-toc-hidden]').forEach((item) => {
+          (item as HTMLElement).style.display = '';
+          item.removeAttribute('data-toc-hidden');
+        });
+        moreBtn.style.display = 'none';
+      });
+    }
 
     const headerBtn = document.getElementById('toc-header-btn');
     const chevron = document.getElementById('toc-chevron');
