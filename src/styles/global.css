@@ -53,7 +53,32 @@
   }
 
   .article-content ol {
-    @apply list-decimal;
+    @apply list-none;
+    counter-reset: ol-counter;
+    padding-left: 0;
+  }
+
+  .article-content ol > li {
+    counter-increment: ol-counter;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+  }
+
+  .article-content ol > li::before {
+    content: counter(ol-counter);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: #2563eb;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-top: 0.2rem;
   }
 
   .article-content li {
