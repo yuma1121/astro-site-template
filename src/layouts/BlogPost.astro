@@ -3,7 +3,6 @@ import BaseLayout from './BaseLayout.astro';
 import TOC from '../components/TOC.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import PointBox from '../components/PointBox.astro';
-import FAQSection from '../components/FAQSection.astro';
 import AuthorBox from '../components/AuthorBox.astro';
 import CompactCTA from '../components/CompactCTA.astro';
 import FloatingElements from '../components/FloatingElements.astro';
@@ -20,7 +19,6 @@ export interface Props {
   tags: string[];
   slug: string;
   points?: string[];
-  faq?: { question: string; answer: string }[];
 }
 
 const {
@@ -34,7 +32,6 @@ const {
   tags,
   slug,
   points,
-  faq,
 } = Astro.props;
 
 const breadcrumbs = [
@@ -207,9 +204,6 @@ const breadcrumbs = [
       )
     }
 
-    <!-- FAQ Section -->
-    {faq && <FAQSection faq={faq} />}
-
     <!-- Author Box -->
     <AuthorBox />
 
@@ -357,10 +351,41 @@ const breadcrumbs = [
       headings.forEach(function(h) { observer.observe(h); });
     }
 
+    // .faq-inline から FAQPage 構造化データを自動生成
+    function buildFaqJsonLd() {
+      var faqItems = document.querySelectorAll('.faq-inline .faq-item');
+      if (faqItems.length === 0) return;
+      var mainEntity = [];
+      faqItems.forEach(function(item) {
+        var q = item.querySelector('.faq-q');
+        var a = item.querySelector('.faq-a');
+        if (q && a) {
+          mainEntity.push({
+            '@type': 'Question',
+            name: q.textContent.trim(),
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: a.textContent.trim()
+            }
+          });
+        }
+      });
+      if (mainEntity.length === 0) return;
+      var script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: mainEntity
+      });
+      document.head.appendChild(script);
+    }
+
     wrapTables();
     moveLead();
     insertMidCTA();
     buildSidebarTOC();
+    buildFaqJsonLd();
   </script>
 
   <FloatingElements isArticle={true} />

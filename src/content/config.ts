@@ -26,14 +26,6 @@ const blogCollection = defineCollection({
       .optional(),
     heroImage: z.string().optional(),
     points: z.array(z.string()).optional(),
-    faq: z
-      .array(
-        z.object({
-          question: z.string(),
-          answer: z.string(),
-        }),
-      )
-      .optional(),
   }),
 });
 
