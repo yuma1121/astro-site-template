@@ -4,7 +4,6 @@ import { site } from '../config/site';
 const { button, banner } = site.floating;
 
 interface Props {
-  /** 記事ページかどうか（目次ボタンは記事ページのみ） */
   isArticle?: boolean;
 }
 
@@ -14,28 +13,26 @@ const { isArticle = false } = Astro.props;
 <!-- スマホ目次フローティング（記事ページのみ・lg未満で表示） -->
 {isArticle && (
   <div class="floating-toc-wrapper" id="floating-toc-wrapper">
-    <!-- 目次パネル（ボタンの上に展開） -->
-    <div class="floating-toc-panel" id="floating-toc-panel" hidden>
+    <div class="floating-toc-panel is-hidden" id="floating-toc-panel">
       <div class="floating-toc-panel-header">
         <span class="floating-toc-panel-title">目次</span>
       </div>
       <nav class="floating-toc-nav" id="floating-toc-nav"></nav>
     </div>
-    <!-- トグルボタン -->
     <button
       id="floating-toc-btn"
       class="floating-toc-btn"
+      type="button"
       aria-label="目次を開閉"
-      aria-expanded="false"
     >
-      <svg class="floating-toc-icon" id="floating-toc-icon-list" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg id="floating-toc-icon-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
         <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
       </svg>
-      <svg class="floating-toc-icon" id="floating-toc-icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+      <svg id="floating-toc-icon-close" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
         <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
       </svg>
-      <span class="floating-toc-label">目次</span>
+      <span>目次</span>
     </button>
   </div>
 )}
@@ -74,7 +71,7 @@ const { isArticle = false } = Astro.props;
       </span>
     </a>
     {banner.dismissible && (
-      <button id="floating-banner-close" class="floating-banner-close" aria-label="閉じる">
+      <button id="floating-banner-close" class="floating-banner-close" type="button" aria-label="閉じる">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
         </svg>
@@ -84,9 +81,6 @@ const { isArticle = false } = Astro.props;
 )}
 
 <style>
-  /* ========================
-     目次フローティング
-     ======================== */
   .floating-toc-wrapper {
     position: fixed;
     bottom: 1.25rem;
@@ -112,28 +106,19 @@ const { isArticle = false } = Astro.props;
     font-weight: 600;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    transition: box-shadow 0.15s, transform 0.15s;
+    transition: box-shadow 0.15s, transform 0.15s, background 0.15s, color 0.15s;
   }
 
   .floating-toc-btn:active {
     transform: scale(0.95);
   }
 
-  .floating-toc-btn[aria-expanded="true"] {
+  .floating-toc-btn.is-open {
     background: #374151;
     color: #fff;
     border-color: #374151;
   }
 
-  .floating-toc-label {
-    letter-spacing: 0.025em;
-  }
-
-  .floating-toc-icon {
-    flex-shrink: 0;
-  }
-
-  /* 目次パネル */
   .floating-toc-panel {
     width: 16rem;
     max-height: 60vh;
@@ -147,6 +132,10 @@ const { isArticle = false } = Astro.props;
     animation: tocPanelIn 0.2s ease;
   }
 
+  .floating-toc-panel.is-hidden {
+    display: none;
+  }
+
   .floating-toc-panel-header {
     padding: 0.75rem 1rem 0.5rem;
     border-bottom: 1px solid #f3f4f6;
@@ -158,7 +147,6 @@ const { isArticle = false } = Astro.props;
     font-weight: 700;
     color: #6b7280;
     letter-spacing: 0.05em;
-    text-transform: uppercase;
   }
 
   .floating-toc-nav {
@@ -188,24 +176,15 @@ const { isArticle = false } = Astro.props;
   }
 
   @keyframes tocPanelIn {
-    from {
-      opacity: 0;
-      transform: translateY(0.5rem) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+    from { opacity: 0; transform: translateY(0.5rem) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* デスクトップ（サイドバーTOCあり）では非表示 */
   @media (min-width: 1024px) {
     .floating-toc-wrapper { display: none; }
   }
 
-  /* ========================
-     フローティングCTAボタン
-     ======================== */
+  /* CTA */
   .floating-cta-btn {
     position: fixed;
     bottom: 1.25rem;
@@ -219,23 +198,16 @@ const { isArticle = false } = Astro.props;
     font-weight: 700;
     text-decoration: none;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s;
   }
 
-  .floating-cta-btn:active {
-    transform: scale(0.95);
-  }
+  .floating-cta-btn:active { transform: scale(0.95); }
 
   @media (min-width: 1024px) {
-    .floating-cta-btn {
-      bottom: 1.5rem;
-      left: 1.5rem;
-    }
+    .floating-cta-btn { bottom: 1.5rem; left: 1.5rem; }
   }
 
-  /* ========================
-     フローティングバナー
-     ======================== */
+  /* Banner */
   .floating-banner {
     position: fixed;
     bottom: 0;
@@ -244,7 +216,6 @@ const { isArticle = false } = Astro.props;
     z-index: 45;
     display: flex;
     align-items: center;
-    padding: 0;
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.1);
   }
 
@@ -258,10 +229,7 @@ const { isArticle = false } = Astro.props;
     text-decoration: none;
   }
 
-  .floating-banner-text {
-    font-size: 0.8125rem;
-    font-weight: 600;
-  }
+  .floating-banner-text { font-size: 0.8125rem; font-weight: 600; }
 
   .floating-banner-cta {
     flex-shrink: 0;
@@ -277,83 +245,92 @@ const { isArticle = false } = Astro.props;
     align-items: center;
     justify-content: center;
     width: 2.5rem;
-    height: 100%;
     color: inherit;
     opacity: 0.6;
     background: none;
     border: none;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
-    transition: opacity 0.15s;
   }
 
-  .floating-banner-close:hover {
-    opacity: 1;
-  }
+  .floating-banner-close:hover { opacity: 1; }
 </style>
 
-<script>
-  function initFloatingTOC() {
-    const btn = document.getElementById('floating-toc-btn');
-    const panel = document.getElementById('floating-toc-panel');
-    const nav = document.getElementById('floating-toc-nav');
-    const iconList = document.getElementById('floating-toc-icon-list');
-    const iconClose = document.getElementById('floating-toc-icon-close');
+<script is:inline>
+  (function() {
+    var btn = document.getElementById('floating-toc-btn');
+    var panel = document.getElementById('floating-toc-panel');
+    var nav = document.getElementById('floating-toc-nav');
+    var iconOpen = document.getElementById('floating-toc-icon-open');
+    var iconClose = document.getElementById('floating-toc-icon-close');
+    var wrapper = document.getElementById('floating-toc-wrapper');
 
     if (!btn || !panel || !nav) return;
 
-    const panelEl = panel as HTMLElement;
-    const btnEl = btn as HTMLButtonElement;
-
-    // 記事のh2/h3から目次を構築
-    const article = document.getElementById('article-body');
+    // 記事からh2/h3を取得して目次を構築
+    var article = document.getElementById('article-body');
     if (!article) return;
-    const headings = article.querySelectorAll('h2, h3');
+    var headings = article.querySelectorAll('h2, h3');
     if (headings.length === 0) {
-      const wrapper = document.getElementById('floating-toc-wrapper');
       if (wrapper) wrapper.style.display = 'none';
       return;
     }
 
-    headings.forEach((heading, index) => {
-      if (!heading.id) heading.id = 'heading-' + index;
-      const a = document.createElement('a');
-      a.href = '#' + heading.id;
-      a.textContent = heading.textContent;
-      if (heading.tagName === 'H3') a.className = 'toc-h3';
-      a.addEventListener('click', () => toggle(false));
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      if (!h.id) h.id = 'heading-' + i;
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      if (h.tagName === 'H3') a.className = 'toc-h3';
+      a.addEventListener('click', function() { closeToc(); });
       nav.appendChild(a);
-    });
-
-    function toggle(open?: boolean) {
-      const isOpen = open ?? panelEl.hidden;
-      panelEl.hidden = !isOpen;
-      btnEl.setAttribute('aria-expanded', String(isOpen));
-      if (iconList) iconList.style.display = isOpen ? 'none' : '';
-      if (iconClose) iconClose.style.display = isOpen ? '' : 'none';
     }
 
-    btnEl.addEventListener('click', () => toggle());
+    var isOpen = false;
 
-    // パネル外クリックで閉じる
-    document.addEventListener('click', (e) => {
-      const wrapper = document.getElementById('floating-toc-wrapper');
-      if (wrapper && !wrapper.contains(e.target as Node) && !panelEl.hidden) {
-        toggle(false);
+    function openToc() {
+      isOpen = true;
+      panel.classList.remove('is-hidden');
+      btn.classList.add('is-open');
+      if (iconOpen) iconOpen.style.display = 'none';
+      if (iconClose) iconClose.style.display = '';
+    }
+
+    function closeToc() {
+      isOpen = false;
+      panel.classList.add('is-hidden');
+      btn.classList.remove('is-open');
+      if (iconOpen) iconOpen.style.display = '';
+      if (iconClose) iconClose.style.display = 'none';
+    }
+
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (isOpen) {
+        closeToc();
+      } else {
+        openToc();
       }
     });
-  }
 
-  function initFloatingBanner() {
-    const banner = document.getElementById('floating-banner');
-    const closeBtn = document.getElementById('floating-banner-close');
-    if (!banner || !closeBtn) return;
-
-    closeBtn.addEventListener('click', () => {
-      banner.style.display = 'none';
+    // パネル内クリックはバブリングを止める
+    panel.addEventListener('click', function(e) {
+      e.stopPropagation();
     });
-  }
 
-  initFloatingTOC();
-  initFloatingBanner();
+    // パネル外クリックで閉じる
+    document.addEventListener('click', function() {
+      if (isOpen) closeToc();
+    });
+
+    // バナー閉じる
+    var banner = document.getElementById('floating-banner');
+    var bannerClose = document.getElementById('floating-banner-close');
+    if (banner && bannerClose) {
+      bannerClose.addEventListener('click', function() {
+        banner.style.display = 'none';
+      });
+    }
+  })();
 </script>
