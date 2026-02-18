@@ -85,6 +85,166 @@ MDX形式で記事を作成します。通常のMarkdownに加えて、Astroコ�
   </div>
 </div>
 
+## ボックス（メリット・デメリット）
+
+<div class="box box-merit">
+  <div class="box-title">メリット</div>
+  <div class="box-content">
+    <p>良い点やメリットを記載するときに使います。</p>
+  </div>
+</div>
+
+<div class="box box-demerit">
+  <div class="box-title">デメリット</div>
+  <div class="box-content">
+    <p>注意点やデメリットを記載するときに使います。</p>
+  </div>
+</div>
+
+## マーカー（蛍光ペン風ハイライト）
+
+テキスト中の<span class="marker-yellow">重要なキーワード</span>を強調できます。
+
+<span class="marker-pink">ピンクのマーカー</span>や<span class="marker-blue">ブルーのマーカー</span>も使えます。
+
+## チェックリスト
+
+<ul class="checklist">
+  <li>本人確認書類（免許証・パスポート等）</li>
+  <li>クレジットカード</li>
+  <li>メールアドレス</li>
+</ul>
+
+不要なものリスト（バツ版）:
+
+<ul class="checklist checklist-ng">
+  <li>住民票は不要です</li>
+  <li>印鑑証明も不要です</li>
+</ul>
+
+## アコーディオン
+
+<div class="accordion">
+  <details>
+    <summary>テンプレートの使い方を教えてください</summary>
+    <div class="accordion-body">
+      <p>src/config/site.ts を編集するだけで、サイト名・URL・カテゴリなどの基本設定が完了します。</p>
+    </div>
+  </details>
+  <details>
+    <summary>カスタマイズはどこまでできますか？</summary>
+    <div class="accordion-body">
+      <p>Astroコンポーネントやスタイルを自由に追加・変更できます。テンプレートはあくまでスタート地点です。</p>
+    </div>
+  </details>
+</div>
+
+## タイムライン
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-date">申し込み当日</div>
+    <div class="timeline-title">オンラインで申し込み</div>
+    <div class="timeline-desc">公式サイトから必要情報を入力。約10分で完了。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">翌日</div>
+    <div class="timeline-title">本人確認書類の提出</div>
+    <div class="timeline-desc">マイページから免許証をアップロード。</div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-date">3日後</div>
+    <div class="timeline-title">利用開始</div>
+    <div class="timeline-desc">審査完了のメールが届き、すぐに利用可能に。</div>
+  </div>
+</div>
+
+## バッジ・ラベル
+
+<p><span class="badge badge-blue">おすすめ</span> このサービスはコスパが良いです。</p>
+
+<p><span class="badge badge-green badge-pill">NEW</span> 2025年から新プランが追加されました。</p>
+
+<p><span class="badge badge-red">注意</span> 申し込み期限にご注意ください。</p>
+
+<p><span class="badge badge-amber">期間限定</span> キャンペーン実施中です。</p>
+
+## メリデメ並列
+
+<div class="merit-demerit">
+  <div class="md-col md-merit">
+    <div class="md-col-header">メリット</div>
+    <div class="md-col-body">
+      <ul>
+        <li>月額料金が業界最安級</li>
+        <li>法人登記が可能</li>
+        <li>郵便転送が無料</li>
+      </ul>
+    </div>
+  </div>
+  <div class="md-col md-demerit">
+    <div class="md-col-header">デメリット</div>
+    <div class="md-col-body">
+      <ul>
+        <li>対面会議室がない</li>
+        <li>電話転送は別料金</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+## ブログカード（リンクカード）
+
+<a href="/" class="blog-card">
+  <div class="blog-card-inner">
+    <div>
+      <span class="blog-card-label">関連記事</span>
+      <div class="blog-card-title">トップページへのリンクカード例</div>
+      <div class="blog-card-desc">内部リンクをカード形式で表示できます。</div>
+    </div>
+    <span class="blog-card-arrow">&rarr;</span>
+  </div>
+</a>
+
+## 番号付きボックス
+
+<div class="num-boxes">
+  <div class="num-box">
+    <div class="num-box-num">1</div>
+    <div class="num-box-body">
+      <div class="num-box-title">料金の安さ</div>
+      <div class="num-box-desc">月額660円〜は業界最安級。初期費用も0円。</div>
+    </div>
+  </div>
+  <div class="num-box">
+    <div class="num-box-num">2</div>
+    <div class="num-box-body">
+      <div class="num-box-title">法人登記対応</div>
+      <div class="num-box-desc">全プランで法人登記が可能です。</div>
+    </div>
+  </div>
+  <div class="num-box">
+    <div class="num-box-num">3</div>
+    <div class="num-box-body">
+      <div class="num-box-title">サポートの充実</div>
+      <div class="num-box-desc">チャットサポートで即日対応。</div>
+    </div>
+  </div>
+</div>
+
+## FAQ（インライン版）
+
+<div class="faq-inline">
+  <div class="faq-item">
+    <div class="faq-q">テンプレートは無料ですか？</div>
+    <div class="faq-a">はい、GitHubからクローンして無料で利用できます。</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">商用利用はできますか？</div>
+    <div class="faq-a">はい、アフィリエイトサイト等の商用利用も可能です。</div>
+  </div>
+</div>
+
 ## まとめ
 
 このサンプル記事を参考に、自分のサイトの記事を作成してください。不要になったら、このファイルを削除して問題ありません。
