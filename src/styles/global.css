@@ -702,7 +702,7 @@
 
   .article-content .checklist li {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
     font-size: 0.875rem;
@@ -715,7 +715,6 @@
     flex-shrink: 0;
     width: 16px;
     height: 16px;
-    margin-top: 0.3rem;
   }
 
   .article-content .checklist-ng li::before {
