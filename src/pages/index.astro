@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site, categoryLabels } from '../config/site';
+
+const allPosts = await getCollection('blog');
+const recentPosts = allPosts
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+---
+
+<BaseLayout
+  title={`${site.name} | ${site.description}`}
+  description={site.description}
+>
+  <!-- Hero -->
+  <section class="bg-gradient-to-b from-blue-50 to-white py-12 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h1 class="text-2xl md:text-4xl font-bold text-gray-900 mb-4">
+        {site.name}
+      </h1>
+      <p class="text-gray-500 text-sm md:text-base max-w-2xl mx-auto">
+        {site.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  {site.categories.length > 0 && (
+    <section class="py-10 border-t">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-lg font-semibold text-gray-900 mb-5">カテゴリー</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {site.categories.map((cat) => (
+            <a
+              href={`/category/${cat.slug}/`}
+              class="block rounded-lg border border-gray-200 bg-white px-4 py-3 hover:border-blue-300 hover:bg-blue-50/40 transition-all"
+            >
+              <span class="block text-sm font-medium text-gray-900">{cat.name}</span>
+              <span class="block text-xs text-gray-400 mt-0.5">{cat.description}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Recent Posts -->
+  <section class="py-10 border-t">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-lg font-semibold text-gray-900 mb-5">最新記事</h2>
+      {
+        recentPosts.length > 0 ? (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {recentPosts.map((post) => (
+              <a
+                href={`/${site.contentPrefix}/${post.slug}/`}
+                class="group block bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-blue-300 hover:shadow-sm transition-all"
+              >
+                <div class="aspect-[1200/630] overflow-hidden bg-gray-100">
+                  <img
+                    src={post.data.heroImage || `/og/${post.slug}.png`}
+                    alt=""
+                    class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    width="1200"
+                    height="630"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="p-5">
+                  <div class="flex items-center gap-2 mb-2.5">
+                    <span class="text-xs text-blue-600 font-medium">
+                      {categoryLabels[post.data.category] || post.data.category}
+                    </span>
+                    <span class="text-gray-200">|</span>
+                    <time class="text-xs text-gray-400">
+                      {post.data.pubDate.toLocaleDateString('ja-JP')}
+                    </time>
+                  </div>
+                  <h3 class="text-[15px] font-semibold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
+                    {post.data.title}
+                  </h3>
+                  <p class="mt-2 text-sm text-gray-500 line-clamp-2">{post.data.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="text-gray-500">記事を準備中です。</p>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,364 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TOC from '../components/TOC.astro';
+import RelatedPosts from '../components/RelatedPosts.astro';
+import PointBox from '../components/PointBox.astro';
+import FAQSection from '../components/FAQSection.astro';
+import AuthorBox from '../components/AuthorBox.astro';
+import CompactCTA from '../components/CompactCTA.astro';
+import { categoryLabels } from '../config/site';
+
+export interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  affiliateLinks?: { name: string; url: string; cta: string; image?: string; catchphrase?: string; description?: string }[];
+  category: string;
+  tags: string[];
+  slug: string;
+  points?: string[];
+  faq?: { question: string; answer: string }[];
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  heroImage,
+  affiliateLinks,
+  category,
+  tags,
+  slug,
+  points,
+  faq,
+} = Astro.props;
+
+const breadcrumbs = [
+  { name: 'ホーム', url: '/' },
+  { name: categoryLabels[category] || category, url: `/category/${category}/` },
+  { name: title, url: '' },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={heroImage || `/og/${slug}.png`}
+  pubDate={pubDate}
+  updatedDate={updatedDate}
+  isArticle={true}
+  breadcrumbs={breadcrumbs}
+>
+  <article class="container-wide py-8 sm:py-12">
+    <div class="grid lg:grid-cols-3 gap-6 md:gap-8">
+    <div class="lg:col-span-2 min-w-0">
+    <!-- Breadcrumb -->
+    <nav class="text-xs text-gray-400 mb-6" aria-label="パンくずリスト">
+      <ol class="flex flex-wrap items-center gap-1">
+        <li class="flex items-center gap-1">
+          <a href="/" class="hover:text-blue-600 transition-colors">ホーム</a>
+        </li>
+        <li class="flex items-center gap-1">
+          <span>/</span>
+          <a href={`/category/${category}/`} class="hover:text-blue-600 transition-colors">
+            {categoryLabels[category] || category}
+          </a>
+        </li>
+        <li class="flex items-center gap-1">
+          <span>/</span>
+          <span class="text-gray-600">{title}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <!-- Article Header -->
+    <header class="mb-8">
+      <div class="flex items-center gap-2 mb-3">
+        <a
+          href={`/category/${category}/`}
+          class="inline-block bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-md hover:bg-blue-100 transition-colors"
+        >
+          {categoryLabels[category] || category}
+        </a>
+      </div>
+      <h1 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight mb-4">
+        {title}
+      </h1>
+      <div class="flex items-center gap-3 text-sm text-gray-400">
+        <div class="flex items-center gap-1">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path></svg
+          >
+          <time datetime={pubDate.toISOString()}>
+            {
+              pubDate.toLocaleDateString('ja-JP', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })
+            }
+          </time>
+        </div>
+        {
+          updatedDate && (
+            <div class="flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                />
+              </svg>
+              <time datetime={updatedDate.toISOString()}>
+                {updatedDate.toLocaleDateString('ja-JP', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </time>
+            </div>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="mb-8 rounded-lg overflow-hidden border border-gray-200">
+      <img
+        src={heroImage || `/og/${slug}.png`}
+        alt={title}
+        class="w-full h-auto object-cover"
+        width="1200"
+        height="630"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    <!-- この記事のポイント -->
+    {points && <PointBox points={points} />}
+
+    <!-- Lead (JSで記事本文から移動) -->
+    <div id="lead-area" class="article-content mb-2"></div>
+
+    <!-- Lead CTA -->
+    {affiliateLinks && affiliateLinks.length > 0 && (
+      <div class="mb-4">
+        <CompactCTA
+          name={affiliateLinks[0].name}
+          url={affiliateLinks[0].url}
+          image={affiliateLinks[0].image}
+          catchphrase={affiliateLinks[0].catchphrase}
+        />
+      </div>
+    )}
+
+    <!-- Table of Contents (mobile) -->
+    <div class="lg:hidden"><TOC /></div>
+
+    <!-- Article Body -->
+    <div class="article-content mb-12" id="article-body">
+      <slot />
+    </div>
+
+    <!-- Bottom Affiliate CTA -->
+    {
+      affiliateLinks && affiliateLinks.length > 0 && (
+        <div class="space-y-8 mb-12">
+          {affiliateLinks.map((link) => (
+            <aside class="bg-blue-50/60 border border-blue-100 rounded-xl overflow-hidden">
+              {link.catchphrase && (
+                <p class="text-center text-sm font-bold text-blue-600 py-2.5 bg-blue-50 border-b border-blue-100 mb-0">
+                  ＼ {link.catchphrase} ／
+                </p>
+              )}
+              <div class="p-5 sm:p-6">
+                {link.image && (
+                  <a href={link.url} target="_blank" rel="nofollow sponsored noopener noreferrer" class="block mb-4 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                    <img src={link.image} alt={`${link.name}の公式サイト`} class="w-full h-auto" width="800" height="420" loading="lazy" />
+                  </a>
+                )}
+                <p class="text-lg font-bold text-gray-900 mb-1.5">{link.name}</p>
+                {link.description && (
+                  <p class="text-sm text-gray-600 leading-relaxed mb-4">{link.description}</p>
+                )}
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="nofollow sponsored noopener noreferrer"
+                  class="flex items-center justify-center gap-2 w-full py-4 bg-blue-600 text-white font-bold text-lg rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition-all no-underline"
+                >
+                  {link.cta}
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </aside>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- FAQ Section -->
+    {faq && <FAQSection faq={faq} />}
+
+    <!-- Author Box -->
+    <AuthorBox />
+
+    <!-- Tags -->
+    {
+      tags.length > 0 && (
+        <div class="border-t pt-6 mt-8">
+          <div class="flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <span class="bg-gray-100 text-gray-500 text-xs px-2.5 py-1 rounded-md">#{tag}</span>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    <!-- Related Posts -->
+    <RelatedPosts category={category} currentSlug={slug} />
+    </div>
+    <!-- サイドバー（デスクトップのみ） -->
+    <nav class="hidden lg:block shrink-0" id="sidebar-toc-wrapper" aria-label="ページ内ナビゲーション">
+      <div class="sticky space-y-0.5" style="top: 5rem;">
+        <div id="sidebar-toc-list"></div>
+      </div>
+    </nav>
+    </div>
+  </article>
+
+  <!-- Mid-article CTA data (inserted by JS after 2nd h2) -->
+  {
+    affiliateLinks && affiliateLinks.length > 0 && (
+      <div
+        id="mid-cta-data"
+        hidden
+        data-name={affiliateLinks[0].name}
+        data-url={affiliateLinks[0].url}
+        data-cta={affiliateLinks[0].cta}
+        data-image={affiliateLinks[0].image || ''}
+        data-catchphrase={affiliateLinks[0].catchphrase || ''}
+        data-description={affiliateLinks[0].description || ''}
+      />
+    )
+  }
+
+  <script is:inline>
+    // Insert mid-article CTA after the 2nd h2
+    function insertMidCTA() {
+      var dataEl = document.getElementById('mid-cta-data');
+      if (!dataEl) return;
+      var name = dataEl.getAttribute('data-name');
+      var url = dataEl.getAttribute('data-url');
+      var cta = dataEl.getAttribute('data-cta');
+      var image = dataEl.getAttribute('data-image');
+      var catchphrase = dataEl.getAttribute('data-catchphrase');
+      var description = dataEl.getAttribute('data-description');
+      if (!name || !url || !cta) return;
+      var articleContent = document.getElementById('article-body');
+      if (!articleContent) return;
+      var h2s = articleContent.querySelectorAll('h2');
+      if (h2s.length >= 3) {
+        var targetH2 = h2s[2];
+        var aside = document.createElement('aside');
+        aside.style.borderRadius = '0.75rem';
+        aside.style.overflow = 'hidden';
+        aside.style.margin = '2.5rem 0';
+        aside.style.background = 'rgba(239,246,255,0.6)';
+        aside.style.border = '1px solid #dbeafe';
+        var catchHtml = catchphrase ? '<p style="text-align:center;font-size:0.875rem;font-weight:700;color:#2563eb;padding:0.625rem;background:#eff6ff;border-bottom:1px solid #dbeafe;margin:0">＼ ' + catchphrase + ' ／</p>' : '';
+        var imgHtml = image ? '<a href="' + url + '" target="_blank" rel="nofollow sponsored noopener noreferrer" style="display:block;margin-bottom:1rem;border-radius:0.5rem;overflow:hidden;border:1px solid #e5e7eb;box-shadow:0 1px 2px rgba(0,0,0,0.05)"><img src="' + image + '" alt="' + name + 'の公式サイト" style="width:100%;height:auto;display:block" loading="lazy" /></a>' : '';
+        var descHtml = description ? '<p style="font-size:0.875rem;color:#4b5563;line-height:1.7;margin:0 0 1rem">' + description + '</p>' : '';
+        aside.innerHTML = catchHtml + '<div style="padding:1.25rem">' + imgHtml + '<p style="font-size:1.125rem;font-weight:700;color:#111827;margin:0 0 0.375rem">' + name + '</p>' + descHtml + '<a href="' + url + '" target="_blank" rel="nofollow sponsored noopener noreferrer" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;padding:1rem;background:#2563eb;color:white;font-size:1.125rem;font-weight:700;border-radius:0.5rem;text-decoration:none;box-shadow:0 1px 3px rgba(0,0,0,0.1)">' + cta + ' &#8599;</a></div>';
+        if (targetH2.parentNode) targetH2.parentNode.insertBefore(aside, targetH2);
+      }
+    }
+
+    // Move lead content (before first h2) above the TOC
+    function moveLead() {
+      var articleContent = document.getElementById('article-body');
+      var leadArea = document.getElementById('lead-area');
+      if (!articleContent || !leadArea) return;
+      var firstH2 = articleContent.querySelector('h2');
+      if (!firstH2) return;
+      var els = [];
+      var el = articleContent.firstElementChild;
+      while (el && el !== firstH2) {
+        els.push(el);
+        el = el.nextElementSibling;
+      }
+      els.forEach(function(node) {
+        if (node.tagName === 'P') node.classList.add('lead-paragraph');
+        if (node.tagName === 'BLOCKQUOTE') node.classList.add('lead-blockquote');
+        leadArea.appendChild(node);
+      });
+    }
+
+    // Wrap tables in scrollable container for mobile
+    function wrapTables() {
+      var articleContent = document.getElementById('article-body');
+      if (!articleContent) return;
+      articleContent.querySelectorAll('table').forEach(function(table) {
+        if (table.parentElement && table.parentElement.classList.contains('table-wrapper')) return;
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrapper';
+        if (table.parentNode) table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      });
+    }
+
+    // Build sidebar TOC (desktop)
+    function buildSidebarTOC() {
+      var sidebarList = document.getElementById('sidebar-toc-list');
+      var sidebarWrapper = document.getElementById('sidebar-toc-wrapper');
+      if (!sidebarList || !sidebarWrapper) return;
+      var article = document.getElementById('article-body');
+      if (!article) return;
+      var headings = article.querySelectorAll('h2');
+      if (headings.length === 0) {
+        sidebarWrapper.style.display = 'none';
+        return;
+      }
+      headings.forEach(function(heading, index) {
+        if (!heading.id) heading.id = 'heading-' + index;
+        var a = document.createElement('a');
+        a.href = '#' + heading.id;
+        a.textContent = heading.textContent;
+        a.setAttribute('data-section', heading.id);
+        a.className = 'detail-nav-link flex items-center gap-2 w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition-colors no-underline '
+          + (index === 0 ? 'text-blue-600 bg-blue-50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50');
+        sidebarList.appendChild(a);
+      });
+      var navLinks = sidebarList.querySelectorAll('a[data-section]');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            navLinks.forEach(function(link) {
+              if (link.getAttribute('data-section') === entry.target.id) {
+                link.className = 'detail-nav-link flex items-center gap-2 w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition-colors no-underline text-blue-600 bg-blue-50';
+              } else {
+                link.className = 'detail-nav-link flex items-center gap-2 w-full text-left px-3 py-2.5 text-sm font-medium rounded-lg transition-colors no-underline text-gray-500 hover:text-gray-700 hover:bg-gray-50';
+              }
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      headings.forEach(function(h) { observer.observe(h); });
+    }
+
+    wrapTables();
+    moveLead();
+    insertMidCTA();
+    buildSidebarTOC();
+  </script>
+</BaseLayout>

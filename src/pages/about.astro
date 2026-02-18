@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+---
+
+<BaseLayout
+  title={`運営者情報 | ${site.name}`}
+  description={`${site.name}の運営者情報ページです。`}
+  breadcrumbs={[
+    { name: 'ホーム', url: '/' },
+    { name: '運営者情報', url: '' },
+  ]}
+>
+  <div class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">運営者情報</h1>
+
+    <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <table class="w-full">
+        <tbody>
+          <tr class="border-b border-gray-200">
+            <th class="bg-gray-50 px-6 py-4 text-left text-sm font-bold text-gray-700 w-1/3">サイト名</th>
+            <td class="px-6 py-4 text-gray-700">{site.name}</td>
+          </tr>
+          <tr class="border-b border-gray-200">
+            <th class="bg-gray-50 px-6 py-4 text-left text-sm font-bold text-gray-700">サイトURL</th>
+            <td class="px-6 py-4 text-gray-700">
+              <a href={site.url} class="text-blue-600 hover:text-blue-800 underline">{site.url}</a>
+            </td>
+          </tr>
+          <tr class="border-b border-gray-200">
+            <th class="bg-gray-50 px-6 py-4 text-left text-sm font-bold text-gray-700">運営者</th>
+            <td class="px-6 py-4 text-gray-700">{site.author.name}</td>
+          </tr>
+          <tr>
+            <th class="bg-gray-50 px-6 py-4 text-left text-sm font-bold text-gray-700">お問い合わせ</th>
+            <td class="px-6 py-4 text-gray-700">
+              <a href="/contact/" class="text-blue-600 hover:text-blue-800 underline">お問い合わせページ</a>よりご連絡ください
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">当サイトについて</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      {site.description}
+    </p>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      当サイトでは、正確な情報の提供に努めておりますが、最新の情報については各公式サイトをご確認ください。
+    </p>
+
+    {site.affiliateDisclaimer && (
+      <div>
+        <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">アフィリエイト広告について</h2>
+        <p class="text-gray-700 leading-relaxed mb-4">
+          当サイトは、一部のリンクにアフィリエイト広告を利用しています。当サイトを経由してサービスにお申し込みいただいた場合、提携先から広告報酬を受け取ることがあります。ただし、広告報酬の有無がランキングや評価に影響を与えることはありません。
+        </p>
+      </div>
+    )}
+  </div>
+</BaseLayout>

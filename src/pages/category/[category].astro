@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site, categoryLabels, categoryDescriptions } from '../../config/site';
+
+export async function getStaticPaths() {
+  return site.categories.map((cat) => ({ params: { category: cat.slug } }));
+}
+
+const { category } = Astro.params;
+const categoryName = categoryLabels[category!] || category;
+const categoryDescription = categoryDescriptions[category!] || '';
+
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter((post) => post.data.category === category)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title={`${categoryName} | ${site.name}`}
+  description={`${categoryName}に関する記事一覧`}
+  breadcrumbs={[
+    { name: 'ホーム', url: '/' },
+    { name: categoryName, url: '' },
+  ]}
+>
+  <section class="py-12 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4">
+      <!-- Header -->
+      <div class="mb-10">
+        <div class="flex items-center gap-2 mb-3">
+          <a href="/" class="text-sm text-gray-400 hover:text-blue-600 transition-colors">ホーム</a>
+          <svg
+            class="w-3.5 h-3.5 text-gray-300"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            ><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"
+            ></path></svg
+          >
+          <span class="text-sm text-gray-600">{categoryName}</span>
+        </div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="inline-block bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-md">
+            {categoryName}
+          </span>
+          <span class="text-sm text-gray-400">{posts.length}件の記事</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{categoryName}</h1>
+        {categoryDescription && (
+          <p class="text-gray-500 text-sm sm:text-base">{categoryDescription}</p>
+        )}
+      </div>
+
+      <!-- Posts Grid -->
+      {
+        posts.length > 0 ? (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post) => (
+              <a
+                href={`/${site.contentPrefix}/${post.slug}/`}
+                class="group block bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-blue-300 hover:shadow-sm transition-all"
+              >
+                <div class="aspect-[1200/630] overflow-hidden bg-gray-100">
+                  <img
+                    src={post.data.heroImage || `/og/${post.slug}.png`}
+                    alt=""
+                    class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                    width="1200"
+                    height="630"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+                <div class="p-5">
+                  <time class="block text-xs text-gray-400 mb-2">
+                    {post.data.pubDate.toLocaleDateString('ja-JP')}
+                  </time>
+                  <h3 class="text-base font-semibold text-gray-900 leading-snug group-hover:text-blue-600 transition-colors">
+                    {post.data.title}
+                  </h3>
+                  <p class="mt-2 text-sm text-gray-500 line-clamp-2">{post.data.description}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-16 border border-gray-200 rounded-lg">
+            <p class="text-gray-400">このカテゴリの記事はまだありません。</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

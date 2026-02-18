@@ -1,0 +1,71 @@
+---
+import { site } from '../config/site';
+
+const currentYear = new Date().getFullYear();
+const hasCategories = site.footerNav.categories.length > 0;
+---
+
+<footer class="border-t bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 py-12">
+    <div class={`grid grid-cols-1 gap-8 ${hasCategories ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+      <div>
+        <div class="mb-3">
+          <span class="text-lg font-bold tracking-tight">
+            <span class="text-gray-800">{site.name}</span>
+          </span>
+        </div>
+        <p class="text-sm text-gray-500 leading-relaxed">
+          {site.footerDescription}
+        </p>
+      </div>
+
+      {hasCategories && (
+        <div>
+          <h3 class="text-sm font-semibold text-gray-900 mb-3">カテゴリー</h3>
+          <ul class="space-y-2">
+            {site.footerNav.categories.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+                >{link.label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div>
+        <h3 class="text-sm font-semibold text-gray-900 mb-3">サイト情報</h3>
+        <ul class="space-y-2">
+          {site.footerNav.siteInfo.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="text-sm text-gray-500 hover:text-blue-600 transition-colors"
+              >{link.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    {site.affiliateDisclaimer && (
+      <div class="border-t mt-8 pt-6">
+        <p class="text-xs text-gray-400 leading-relaxed mb-4">
+          ※ 当サイトはアフィリエイトプログラムに参加しています。記事内のリンクを経由してサービスに申し込まれた場合、当サイトが紹介料を受け取ることがあります。
+          なお、紹介料の有無がサービスの評価・ランキングに影響することはありません。
+        </p>
+        <p class="text-xs text-gray-400 leading-relaxed">
+          ※ 掲載情報は記事執筆時点のものです。最新の情報は各サービスの公式サイトでご確認ください。
+        </p>
+      </div>
+    )}
+
+    <div class="border-t mt-6 pt-6 text-center">
+      <p class="text-xs text-gray-400">
+        &copy; {currentYear} {site.name} All Rights Reserved.
+      </p>
+    </div>
+  </div>
+</footer>

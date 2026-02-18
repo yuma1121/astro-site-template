@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+---
+
+<BaseLayout
+  title={`プライバシーポリシー | ${site.name}`}
+  description={`${site.name}のプライバシーポリシーページです。`}
+  breadcrumbs={[
+    { name: 'ホーム', url: '/' },
+    { name: 'プライバシーポリシー', url: '' },
+  ]}
+>
+  <div class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">プライバシーポリシー</h1>
+
+    <p class="text-gray-700 leading-relaxed mb-4">
+      {site.name}（以下「当サイト」）は、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシーを定めます。
+    </p>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">個人情報の利用目的</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      当サイトでは、お問い合わせの際に、お名前・メールアドレス等の個人情報をご記入いただく場合がございます。
+      これらの個人情報は、お問い合わせに対する回答のために利用し、それ以外の目的では利用いたしません。
+    </p>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">アクセス解析ツールについて</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。
+      Googleアナリティクスはデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。
+    </p>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">免責事項</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      当サイトに掲載されている情報の正確性には万全を期しておりますが、利用者が当サイトの情報を用いて行う一切の行為について、当サイトは責任を負うものではありません。
+    </p>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">プライバシーポリシーの変更</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      当サイトは、個人情報に関して適用される日本の法令を遵守するとともに、本ポリシーの内容を適宜見直し、その改善に努めます。
+    </p>
+  </div>
+</BaseLayout>

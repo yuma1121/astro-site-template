@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../config/site';
+
+export interface Props {
+  category: string;
+  currentSlug: string;
+}
+
+const { category, currentSlug } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+  .filter((post) => post.data.category === category && post.slug !== currentSlug)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+{
+  relatedPosts.length > 0 && (
+    <section class="mt-12 pt-8 border-t border-gray-200">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">関連記事</h2>
+      <div class="grid md:grid-cols-3 gap-4">
+        {relatedPosts.map((post) => (
+          <a
+            href={`/${site.contentPrefix}/${post.slug}/`}
+            class="group block rounded-lg border border-gray-200 overflow-hidden hover:border-blue-300 hover:shadow-sm bg-white transition-all duration-200"
+          >
+            <div class="aspect-[1200/630] overflow-hidden bg-gray-100">
+              <img
+                src={post.data.heroImage || `/og/${post.slug}.png`}
+                alt=""
+                class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                width="1200"
+                height="630"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div class="p-4">
+              <h3 class="text-sm font-medium text-gray-900 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">
+                {post.data.title}
+              </h3>
+              <div class="flex items-center gap-2 mt-3">
+                <time class="text-xs text-gray-400">
+                  {post.data.pubDate.toLocaleDateString('ja-JP')}
+                </time>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}

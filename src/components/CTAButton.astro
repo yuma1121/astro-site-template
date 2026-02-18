@@ -1,0 +1,37 @@
+---
+export interface Props {
+  serviceName: string;
+  url: string;
+  ctaText?: string;
+  variant?: 'default' | 'outline';
+}
+
+const { serviceName, url, ctaText = '公式サイトを見る', variant = 'default' } = Astro.props;
+
+const baseClasses =
+  'inline-flex flex-col items-center justify-center px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:-translate-y-0.5';
+const variantClasses =
+  variant === 'outline'
+    ? 'border border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300'
+    : 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md';
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="nofollow sponsored noopener noreferrer"
+  class:list={[baseClasses, variantClasses]}
+>
+  <span class="text-xs opacity-75">{serviceName}</span>
+  <span class="text-sm mt-0.5 flex items-center gap-1">
+    {ctaText}
+    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+      ><path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+      ></path></svg
+    >
+  </span>
+</a>

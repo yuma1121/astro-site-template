@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+---
+
+<BaseLayout
+  title={`お問い合わせ | ${site.name}`}
+  description={`${site.name}へのお問い合わせページです。`}
+  breadcrumbs={[
+    { name: 'ホーム', url: '/' },
+    { name: 'お問い合わせ', url: '' },
+  ]}
+>
+  <div class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">お問い合わせ</h1>
+
+    <p class="text-gray-700 leading-relaxed mb-4">
+      {site.name}へのお問い合わせは、下記メールアドレスよりお願いいたします。
+    </p>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">お問い合わせ方法</h2>
+    <p class="text-gray-700 leading-relaxed mb-4">
+      以下の内容について、お気軽にお問い合わせください。
+    </p>
+    <ul class="list-disc pl-6 mb-4">
+      <li class="mb-2 text-gray-700 leading-relaxed">当サイトに掲載されている情報に関するご質問</li>
+      <li class="mb-2 text-gray-700 leading-relaxed">掲載内容の誤り・修正のご依頼</li>
+      <li class="mb-2 text-gray-700 leading-relaxed">広告掲載・取材に関するお問い合わせ</li>
+      <li class="mb-2 text-gray-700 leading-relaxed">その他、当サイトに関するご意見・ご要望</li>
+    </ul>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">メールアドレス</h2>
+    <div class="bg-gray-50 rounded-lg border border-gray-200 p-6 mb-6">
+      <p class="text-center">
+        <a
+          href={`mailto:${site.contactEmail}`}
+          class="text-lg text-blue-600 hover:text-blue-800 underline font-medium"
+        >
+          {site.contactEmail}
+        </a>
+      </p>
+    </div>
+
+    <h2 class="text-xl font-bold text-gray-900 mb-4 mt-8">注意事項</h2>
+    <ul class="list-disc pl-6 mb-4">
+      <li class="mb-2 text-gray-700 leading-relaxed">
+        お問い合わせへの返信には、数日程度お時間をいただく場合がございます。
+      </li>
+      <li class="mb-2 text-gray-700 leading-relaxed">
+        内容によっては、返信いたしかねる場合がございます。
+      </li>
+      <li class="mb-2 text-gray-700 leading-relaxed">
+        お預かりした個人情報は、お問い合わせへの回答にのみ使用し、それ以外の目的には利用いたしません。詳しくは<a
+          href="/privacy/"
+          class="text-blue-600 hover:text-blue-800 underline">プライバシーポリシー</a
+        >をご確認ください。
+      </li>
+    </ul>
+  </div>
+</BaseLayout>

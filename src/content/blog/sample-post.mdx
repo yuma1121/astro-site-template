@@ -1,0 +1,90 @@
+---
+title: 'サンプル記事タイトル：テンプレートの使い方ガイド'
+description: 'このサンプル記事では、テンプレートの記事作成方法を解説します。MDXの書き方やフロントマターの設定例をご紹介します。'
+pubDate: 2025-01-01
+category: 'cat1'
+tags: ['サンプル', 'テンプレート', '使い方']
+heroImage: '/images/common/og-default.png'
+points:
+  - 'MDXで記事を作成できます'
+  - 'フロントマターでメタ情報を設定'
+  - 'コンポーネントも埋め込み可能'
+faq:
+  - question: 'どうやって新しい記事を追加しますか？'
+    answer: 'src/content/blog/ ディレクトリに .mdx ファイルを作成してください。フロントマターに title、description、pubDate、category、tags を設定するだけで記事が公開されます。'
+  - question: 'カテゴリはどこで定義しますか？'
+    answer: 'src/config/site.ts の categories 配列で定義します。slug（URL用）、name（表示名）、description（説明文）を設定してください。'
+affiliateLinks:
+  - name: 'サンプルサービス'
+    url: 'https://example.com'
+    cta: '公式サイトを見る'
+    catchphrase: 'サンプルのキャッチコピー'
+    description: 'ここにサービスの簡単な説明が入ります。'
+---
+
+この記事はテンプレートのサンプルです。新しいサイトを作成する際は、このファイルを参考に記事を作成してください。
+
+## 記事の書き方
+
+MDX形式で記事を作成します。通常のMarkdownに加えて、Astroコンポーネントを埋め込むことができます。
+
+### フロントマターの設定
+
+記事ファイルの先頭に、以下の情報を設定します。
+
+- **title**: 記事のタイトル（必須）
+- **description**: 記事の説明文（必須）
+- **pubDate**: 公開日（必須）
+- **category**: カテゴリのslug（必須）
+- **tags**: タグの配列（必須）
+- **heroImage**: アイキャッチ画像のパス（任意）
+- **points**: 記事のポイント（任意、記事上部に表示）
+- **faq**: よくある質問（任意、記事下部にFAQセクションとして表示）
+- **affiliateLinks**: アフィリエイトリンク（任意、CTA表示に使用）
+
+### Markdownの基本記法
+
+通常のMarkdown記法がすべて使えます。
+
+**太字テキスト**や、[リンクテキスト](https://example.com)、リストなど、一般的なMarkdownの書き方で記事を作成できます。
+
+## テーブルの例
+
+<div class="table-wrapper">
+
+| 項目 | 内容 | 備考 |
+|------|------|------|
+| サイト名 | site.tsで設定 | 必須 |
+| URL | site.tsで設定 | 必須 |
+| カテゴリ | site.tsで定義 | 複数設定可 |
+
+</div>
+
+## ボックスの使い方
+
+記事内でボックスを使いたい場合は、HTMLタグを直接記述します。
+
+<div class="box box-point">
+  <div class="box-title">ポイント</div>
+  <div class="box-content">
+    <p>重要なポイントをまとめるときに使います。</p>
+  </div>
+</div>
+
+<div class="box box-info">
+  <div class="box-title">メモ</div>
+  <div class="box-content">
+    <p>補足情報や参考情報を記載するときに使います。</p>
+  </div>
+</div>
+
+<div class="box box-warning">
+  <div class="box-title">注意</div>
+  <div class="box-content">
+    <p>注意事項や気をつけるべきポイントを記載するときに使います。</p>
+  </div>
+</div>
+
+## まとめ
+
+このサンプル記事を参考に、自分のサイトの記事を作成してください。不要になったら、このファイルを削除して問題ありません。

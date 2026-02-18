@@ -1,0 +1,31 @@
+---
+import { site } from '../config/site';
+---
+
+<aside class="author-box border border-gray-200 rounded overflow-hidden mt-12">
+  <div class="bg-gray-50 px-4 py-2 border-b border-gray-200">
+    <span class="text-sm font-bold text-gray-800">この記事を書いた人</span>
+  </div>
+  <div class="flex items-start gap-4 p-4">
+    <img
+      src={site.author.avatarPath}
+      alt="編集部アイコン"
+      class="w-14 h-14 rounded-full object-cover shrink-0"
+      loading="lazy"
+    />
+    <div class="flex-1 min-w-0">
+      <p class="text-sm font-bold text-gray-900 mb-1">
+        {site.author.name}
+      </p>
+      <p class="text-xs text-gray-500 leading-relaxed mb-2">
+        {site.author.bio}
+      </p>
+      <a
+        href={site.author.aboutPagePath}
+        class="text-xs text-blue-600 hover:text-blue-800 font-medium"
+      >
+        運営者情報を見る &rarr;
+      </a>
+    </div>
+  </div>
+</aside>

@@ -1,0 +1,60 @@
+---
+export interface Props {
+  faq: { question: string; answer: string }[];
+}
+
+const { faq } = Astro.props;
+---
+
+{
+  faq && faq.length > 0 && (
+    <section class="mt-12 pt-8 border-t border-gray-200">
+      <p class="text-sm font-bold text-gray-800 mb-4">よくある質問</p>
+      <div class="space-y-3">
+        {faq.map((item, i) => (
+          <details class="group border border-gray-200 rounded overflow-hidden" open={i === 0}>
+            <summary class="flex items-start gap-2 px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors list-none [&::-webkit-details-marker]:hidden">
+              <span class="shrink-0 text-sm font-bold text-gray-800 mt-px">Q.</span>
+              <span class="text-sm font-medium text-gray-800 leading-relaxed">
+                {item.question}
+              </span>
+              <svg
+                class="w-3.5 h-3.5 text-gray-400 shrink-0 ml-auto mt-1 transition-transform group-open:rotate-180"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </summary>
+            <div class="flex items-start gap-2 px-4 py-3 border-t border-gray-100 bg-gray-50/50">
+              <span class="shrink-0 text-sm font-bold text-gray-400 mt-px">A.</span>
+              <p class="text-sm text-gray-600 leading-relaxed" set:html={item.answer} />
+            </div>
+          </details>
+        ))}
+      </div>
+
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faq.map((item) => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer,
+            },
+          })),
+        })}
+      />
+    </section>
+  )
+}
