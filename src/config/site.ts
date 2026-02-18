@@ -62,6 +62,45 @@ export const site = {
     { slug: 'cat2', name: 'カテゴリ2', description: 'カテゴリ2の説明文' },
   ] as { slug: string; name: string; description: string }[],
 
+  // === フローティング要素（スマホ） ===
+  floating: {
+    /**
+     * フローティングボタン（右下に固定表示）
+     * 目次ボタンは自動表示されるため設定不要。
+     * 追加のCTAボタンを表示したい場合に設定。
+     */
+    button: {
+      enabled: false,
+      label: 'お問い合わせ',
+      url: '/contact/',
+      /** ボタン色 */
+      bgColor: '#2563eb',
+      textColor: '#ffffff',
+      /** 新しいタブで開くか */
+      external: false,
+    },
+    /**
+     * フローティングバナー（下部に固定表示）
+     * キャンペーン告知やCTAバナーに利用。
+     */
+    banner: {
+      enabled: false,
+      /** バナー内テキスト */
+      text: 'キャンペーン実施中！',
+      /** リンクURL */
+      url: 'https://example.com',
+      /** CTAボタンテキスト */
+      cta: '詳しく見る',
+      bgColor: '#1e3a5f',
+      textColor: '#ffffff',
+      ctaBgColor: '#f59e0b',
+      ctaTextColor: '#111827',
+      external: true,
+      /** 閉じるボタンを表示するか */
+      dismissible: true,
+    },
+  },
+
   // === フッター ===
   footerDescription: 'サイトのフッター説明文をここに入力してください。',
   /** アフィリエイト免責表示を表示するか */

@@ -6,6 +6,7 @@ import PointBox from '../components/PointBox.astro';
 import FAQSection from '../components/FAQSection.astro';
 import AuthorBox from '../components/AuthorBox.astro';
 import CompactCTA from '../components/CompactCTA.astro';
+import FloatingElements from '../components/FloatingElements.astro';
 import { categoryLabels } from '../config/site';
 
 export interface Props {
@@ -361,4 +362,6 @@ const breadcrumbs = [
     insertMidCTA();
     buildSidebarTOC();
   </script>
+
+  <FloatingElements isArticle={true} />
 </BaseLayout>
