@@ -142,6 +142,18 @@
   .toc-list :global(.toc-h3 a:hover) {
     color: #6b7280;
   }
+
+  @media (max-width: 1023px) {
+    .toc-list :global(.toc-h2 a::before) {
+      display: none;
+    }
+    .toc-list :global(.toc-h2 a) {
+      gap: 0;
+    }
+    .toc-list :global(.toc-h3 a) {
+      padding-left: 1.75rem;
+    }
+  }
 </style>
 
 <script>
